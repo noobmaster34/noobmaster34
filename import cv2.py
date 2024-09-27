@@ -24,6 +24,8 @@ cv2.waitKey(0)
 # Find contours in the mask
 # cv2.RETR_EXTERNAL retrieves only the outermost contours
 # cv2.CHAIN_APPROX_SIMPLE compresses the contours to save memory.
+# the first output is countours
+# the second output is the heiarchy of contours which we dont care about so we just use _ to discard the variable
 contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
 # List to store cone centers
@@ -37,7 +39,7 @@ for contour in contours:
             cx = int(M['m10'] / M['m00'])
             cy = int(M['m01'] / M['m00'])
             cone_centers.append((cx, cy))
-            # Draw the center of the cone on the original image
+            # Draw the center of the cone on the original image at point (cx, cy)
             cv2.circle(image, (cx, cy), 5, (255, 255, 255), -1)
 
 # Sort the cones based on x-coordinates (left to right)
@@ -74,4 +76,5 @@ if len(right_line) > 1:
 
 cv2.imshow('Image with Detected Cones and Lines of Best Fit', image)
 cv2.waitKey(0)
+cv2.imwrite("answer.png", image)
 cv2.destroyAllWindows()
